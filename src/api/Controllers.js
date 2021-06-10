@@ -6,10 +6,12 @@ const Controllers = () => {
   const [omdb, setOmdb] = useState([]);
 
   useEffect(() => {
-    API.getTMDB().then((tmdb) => setTmdb(tmdb));
+    API.getTMDB()
+    .then((tmdb) => setTmdb(tmdb));
   }, []);
   useEffect(() => {
-    API.getOMDB().then(omdb => setOmdb(omdb));
+    API.getOMDB()
+    .then(omdb => setOmdb(JSON.stringify(omdb)));
   }, []);
 
   console.log(`${omdb} OMDB`);
@@ -25,8 +27,8 @@ const Controllers = () => {
       {moviesTittle}
       {moviesDescription}
       <p>tmdb Average Rating {moviesRating}</p>
-      <img src={moviesFrontCover} alt="movie cover"></img>
-      <img src={moviesBackCover} alt="movie cover"></img>
+      {/* <img src={moviesFrontCover} alt="movie cover"></img>
+      <img src={moviesBackCover} alt="movie cover"></img> */}
     </>
     //map the response to dinamically generate the movies infos
     //uses material UI to style the cards with movies infos
