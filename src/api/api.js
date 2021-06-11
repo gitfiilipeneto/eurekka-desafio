@@ -1,7 +1,7 @@
 let tmdb = undefined;
 let omdb = undefined;
 class API {
-  static getTMDB(page) {
+  static getTMDBTopRatting(page) {
    return fetch(
         `https://api.themoviedb.org/3/movie/top_rated?api_key=a341a9d7cb2bd4eba1b729d6e957cbf9&page=${page}`)
         .then((response) => response.json());
