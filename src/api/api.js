@@ -17,8 +17,7 @@ class API {
       .then((omdbResponse) => omdbResponse.json())
     }
     return omdb
-
-    //OMDF is the most complete on this, have scores from rotten, metacritic and imdb
+        //OMDF is the most complete on this, have scores from rotten, metacritic and imdb
   }
 } // call others API here
 // https://api.thetvdb.com/swagger
