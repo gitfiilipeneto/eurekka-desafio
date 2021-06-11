@@ -1,4 +1,4 @@
-let tmdb = undefined;
+let TMDBTopRatting = undefined;
 let omdb = undefined;
 class API {
   static getTMDBTopRatting(page) {
@@ -6,8 +6,11 @@ class API {
         `https://api.themoviedb.org/3/movie/top_rated?api_key=a341a9d7cb2bd4eba1b729d6e957cbf9&page=${page}`)
         .then((response) => response.json());
         // api Example, single movie req i'll read the doc for more
-
   }
+  static getSpecificMovie(movieId){
+    
+  }
+
 
   static getOMDB(imdbID) {
     if (!omdb) {

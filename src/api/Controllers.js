@@ -7,7 +7,7 @@ import API from "./api";
 const Controllers = () => {
   useEffect(() => {
     API.getTMDBTopRatting(pagination)
-    .then((tmdb) => setTmdb(tmdb));
+    .then((TMDBTopRatting) => setTmdb(TMDBTopRatting));
   }, []);
 
   const [tmdb, setTmdb] = useState({results: []});
@@ -18,11 +18,20 @@ const Controllers = () => {
   const nextPage = () => {
     setPagination(pagination + 1)
     API.getTMDBTopRatting(pagination + 1)
-    .then((tmdb) => setTmdb(tmdb));
+    .then((TMDBTopRatting) => setTmdb(TMDBTopRatting));
+  }
+  const previousPage = () => {
+    if(pagination === 1 ){
+      return
+    }else{
+      setPagination(pagination - 1)
+      API.getTMDBTopRatting(pagination - 1)
+    .then((TMDBTopRatting) => setTmdb(TMDBTopRatting))
+    }
   }
   // let imdbID = tmdb.imdb_id.toString()// teste
 
-  console.log(pagination)
+  console.log(tmdb)
   console.log(tmdb.results)
 
  
@@ -36,7 +45,7 @@ const Controllers = () => {
   let moviesArray = tmdb.results
   console.log(typeof(moviesArray))
 
-  let moviesMap = tmdb.results.map((movie) => {
+  let moviesMap = moviesArray.map((movie) => {
     return(
       <div>
         <p>{movie.title} IMDB rating: {movie.vote_average} </p>
@@ -48,8 +57,10 @@ const Controllers = () => {
   
   return (
     <>
+    page: {pagination}
     {moviesMap}
-    <button>Previous Page</button>
+    <button
+    onClick={() => previousPage()} >Previous Page</button>
     <button
     onClick={() => nextPage()}>NextPage</button>
   </>
@@ -58,5 +69,5 @@ const Controllers = () => {
 };
 
 //use this to default application controller
-
+//start components logic
 export default Controllers;
