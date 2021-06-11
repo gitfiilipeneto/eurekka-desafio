@@ -3,14 +3,21 @@ import API from "./api";
 
 const Controllers = () => {
   const [tmdb, setTmdb] = useState([]);
+  const [omdb, setOMDB] = useState([]);
+  let imdbID = 'tt3896198' // teste
   
 
   useEffect(() => {
     API.getTMDB()
     .then((tmdb) => setTmdb(tmdb));
   }, []);
-  
 
+  useEffect(() => {
+    API.getOMDB(imdbID)
+    .then((omdb) => setOMDB(omdb));
+  }, []);
+  
+  console.log(omdb)
 
   let moviesTittle = tmdb.title; //apply destructurng method for each .item on tmdb
   let moviesDescription = tmdb.overview;

@@ -11,9 +11,9 @@ class API {
     return tmdb
   }
 
-  static getOMDB() {
+  static getOMDB(imdbID) {
     if (!omdb) {
-      omdb = fetch("http://www.omdbapi.com/?i=tt3896198&apikey=40e4e39d")
+      omdb = fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=40e4e39d`)
       .then((omdbResponse) => omdbResponse.json())
     }
     return omdb
