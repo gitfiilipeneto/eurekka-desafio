@@ -1,5 +1,5 @@
-let TMDBTopRatting = undefined;
-let specificMovie = undefined;
+
+
 let omdb = undefined;
 class API {
   static getTMDBTopRatting(page) {
@@ -18,12 +18,11 @@ class API {
 
 
   static getOMDB(imdbID) {
-    if (!omdb) {
-      omdb = fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=40e4e39d`).then(
+   return fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=40e4e39d`).then(
         (omdbResponse) => omdbResponse.json()
       );
-    }
-    return omdb;
+    
+
     //OMDF is the most complete on this, have scores from rotten, metacritic and imdb
   }
 } // call others API here
