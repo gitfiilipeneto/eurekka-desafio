@@ -7,7 +7,7 @@ const Controllers = () => {
   const [tmdb, setTmdb] = useState({ results: [] });
 
   const [pagination, setPagination] = useState(1);
-  // const [movieId, setMovieId] = useState('');
+ 
   useEffect(() => {
     API.getTMDBTopRatting(pagination).then((TMDBTopRatting) =>
       setTmdb(TMDBTopRatting)
@@ -18,11 +18,6 @@ const Controllers = () => {
   //   API.getSpecificMovie(movieId).then((specificMovie) =>
   //     setMovieId(specificMovie)
   //   );
-  // }, []);
-
-  // useEffect(() => {
-  //   API.getOMDB(imdbID)
-  //   .then((omdb) => setOMDB(omdb));
   // }, []);
 
   const nextPage = () => {
@@ -50,11 +45,6 @@ const Controllers = () => {
 
 
   let moviesArray = tmdb.results;
-
-
-  
-
-
 
   return (
     <>
