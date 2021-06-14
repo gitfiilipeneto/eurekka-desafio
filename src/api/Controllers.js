@@ -3,22 +3,19 @@ import TmdbRender from "../components/TmdbRender";
 import API from "./api";
 
 const Controllers = () => {
-
   const [tmdb, setTmdb] = useState({ results: [] });
 
   const [pagination, setPagination] = useState(1);
- 
+
+  // const [imdb_index, setImdb_index] = useState("");
+  const [movieMetaData, setMovieMetaData] = useState({ imdb_id: 0 });
+  const [addtionalMetaData, setAdditionalMetadata] = useState({});
+
   useEffect(() => {
     API.getTMDBTopRatting(pagination).then((TMDBTopRatting) =>
       setTmdb(TMDBTopRatting)
     );
   }, []);
-
-  // useEffect(() => {
-  //   API.getSpecificMovie(movieId).then((specificMovie) =>
-  //     setMovieId(specificMovie)
-  //   );
-  // }, []);
 
   const nextPage = () => {
     setPagination(pagination + 1);
@@ -37,11 +34,25 @@ const Controllers = () => {
     }
   };
 
-  // let imdbID = tmdb.imdb_id.toString()// teste
+  const [ratings, setRatings] = useState([{}]);
 
-  console.log(tmdb, "TMDB top rating");
- 
-  // console.log(movieId, "movieId");
+  const getAdditionalData = (imdbId) => {
+    API.getOMDB(imdbId).then((addtionalMetaData) =>
+    setAdditionalMetadata(addtionalMetaData)
+    );
+    console.log(addtionalMetaData, imdbId)
+
+  };
+
+  const getMovieMetaData = (id) => {
+    API.getSpecificMovie(id).then((movieMetaData) =>
+      setMovieMetaData(movieMetaData)
+    );
+    console.log(movieMetaData.imdb_id, "imdb ID")
+    
+    return getAdditionalData(movieMetaData.imdb_id.toString());
+
+  };
 
 
   let moviesArray = tmdb.results;
@@ -49,8 +60,10 @@ const Controllers = () => {
   return (
     <>
       page: {pagination}
-
-      <TmdbRender moviesArray= {moviesArray}/>
+      <TmdbRender
+        moviesArray={moviesArray}
+        getMovieMetaData={getMovieMetaData}
+      />
       <button onClick={() => previousPage()}>Previous Page</button>
       <button onClick={() => nextPage()}>NextPage</button>
     </>

@@ -1,13 +1,13 @@
-import React, {useState, useEffect} from "react";
-import API from "../api/api";
+// import React, {useState, useEffect} from "react";
+// import API from "../api/api";
 
-const OmdbRender = ({ tmdb_ID, imdb_index }) => {
-  // useState()
-  // useEffect(() => {
-  //   API.getOMDB(imdb_index).then((omdb) => setOMDB(omdb));
-  // }, []);
+// const OmdbRender = ({ }) => {
+//   // useState()
+//   // useEffect(() => {
+//   //   API.getOMDB(imdb_index).then((omdb) => setOMDB(omdb));
+//   // }, []);
   
-  return <p>{imdb_index}</p>;
-};
+//   return <p></p>;
+// };
 
-export default OmdbRender;
+// export default OmdbRender;
