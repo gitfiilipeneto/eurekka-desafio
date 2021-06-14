@@ -46,8 +46,8 @@ const Controllers = () => {
 
   const getAdditionalData = (imdbId) => {
     API.getOMDB(imdbId).then((addtionalMetaData) => {
-      setAdditionalMetadata(addtionalMetaData);
-      console.log(addtionalMetaData, imdbId);
+      return setAdditionalMetadata(addtionalMetaData)
+      
     });
   };
   let moviesArray = tmdb.results;
@@ -58,7 +58,9 @@ const Controllers = () => {
       <TmdbRender
         moviesArray={moviesArray}
         getMovieMetaData={getMovieMetaData}
+        addtionalMetaData={addtionalMetaData}
       />
+
       <button onClick={() => previousPage()}>Previous Page</button>
       <button onClick={() => nextPage()}>NextPage</button>
     </>
