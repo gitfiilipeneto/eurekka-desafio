@@ -36,25 +36,20 @@ const Controllers = () => {
 
   const [ratings, setRatings] = useState([{}]);
 
-  const getAdditionalData = (imdbId) => {
-    API.getOMDB(imdbId).then((addtionalMetaData) =>
-    setAdditionalMetadata(addtionalMetaData)
-    );
-    console.log(addtionalMetaData, imdbId)
-
-  };
-
   const getMovieMetaData = (id) => {
-    API.getSpecificMovie(id).then((movieMetaData) =>
-      setMovieMetaData(movieMetaData)
-    );
-    console.log(movieMetaData.imdb_id, "imdb ID")
-    
-    return getAdditionalData(movieMetaData.imdb_id.toString());
-
+    API.getSpecificMovie(id).then((movieMetaData) => {
+      setMovieMetaData(movieMetaData);
+      console.log(movieMetaData.imdb_id, "imdb ID");
+      return getAdditionalData(movieMetaData.imdb_id.toString());
+    });
   };
 
-
+  const getAdditionalData = (imdbId) => {
+    API.getOMDB(imdbId).then((addtionalMetaData) => {
+      setAdditionalMetadata(addtionalMetaData);
+      console.log(addtionalMetaData, imdbId);
+    });
+  };
   let moviesArray = tmdb.results;
 
   return (
