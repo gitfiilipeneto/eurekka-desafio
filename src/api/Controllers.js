@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 import TmdbRender from "../components/TmdbRender";
+import MyMovies from "../components/MyMoviesList";
 import API from "./api";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import Button from "@material-ui/core/Button";
 
 const Controllers = () => {
   const [tmdb, setTmdb] = useState({ results: [] });
 
   const [pagination, setPagination] = useState(1);
 
-  // const [imdb_index, setImdb_index] = useState("");
   const [movieMetaData, setMovieMetaData] = useState({ imdb_id: 0 });
   const [addtionalMetaData, setAdditionalMetadata] = useState({});
+  const [myMovies, setMyMovies] = useState([]);
 
   useEffect(() => {
     API.getTMDBTopRatting(pagination).then((TMDBTopRatting) => {
-      setTmdb(TMDBTopRatting);
-      // console.log(`${tmdb.results} initial render`)
+      setTmdb(TMDBTopRatting)
     });
   }, []);
 
@@ -48,7 +49,6 @@ const Controllers = () => {
   const getAdditionalData = (imdbId) => {
     API.getOMDB(imdbId).then((addtionalMetaData) => {
       setAdditionalMetadata(addtionalMetaData);
-      console.log(addtionalMetaData);
     });
   };
 
@@ -81,12 +81,26 @@ const Controllers = () => {
               addtionalMetaData={addtionalMetaData}
             />
           </>
-          <Grid container justify="center" >
-            <button onClick={() => previousPage()}>Previous Page</button>
-            <button onClick={() => nextPage()}>NextPage</button>
+          <Grid container justify="center">
+            <Button
+              disabled={pagination === 1}
+              variant="contained"
+              color="primary"
+              onClick={() => previousPage()}
+            >
+              Previous Page
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => nextPage()}
+            >
+              Next Page
+            </Button>
           </Grid>
         </Grid>
       </Grid>
+      {/* <MyMovies/> */}
     </>
   );
 };

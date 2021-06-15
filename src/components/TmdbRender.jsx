@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -8,17 +8,23 @@ import CardContent from "@material-ui/core/CardContent";
 import { Typography, CardActions } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import UnfoldMoreIcon from '@material-ui/icons/UnfoldMore';
-import Collapse from '@material-ui/core/Collapse';
-import Chip from "@material-ui/core/Chip"
+import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
+import Collapse from "@material-ui/core/Collapse";
+import Chip from "@material-ui/core/Chip";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 400,
+    maxWidth: 500,
   },
   media: {
-    height: 500,
-    paddingTop: "56.25%", // 16:9
+    height: 450,
+    // maxHeight: 900,
+    paddingTop: "50.25%",
+    objectFit: "contain", // 16:9
+  },
+  margin: {
+    marginTop: 10,
+    marginBottom: 10,
   },
   expand: {
     transform: "rotate(0deg)",
@@ -35,80 +41,81 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const TmdbRender = ({ moviesArray, getMovieMetaData, movieMetaData, addtionalMetaData }) => {
+const TmdbRender = ({
+  moviesArray,
+  getMovieMetaData,
+  movieMetaData,
+  addtionalMetaData,
+}) => {
+  // useEffect(() => {
+  //   metaDataDependency()
+  //   console.log(addtionalMetaData,"metadadependency")
+  // }, []);
+
   const [expanded, setExpanded] = useState(false);
   const [expandedId, setExpandedId] = useState(-1);
   const classes = useStyles();
-  // let movie = {id : 0}
 
   let getMovieCover = "https://image.tmdb.org/t/p/w500/";
   let releaseDate = "Release Date: ";
+  let voteAvg = "Vote Average: ";
 
-
-  const handleExpandClick = (i, id) => {   
-    // let genres = movieMetaData.map(movie => {
-    //   <Chip label = {movie.genres} />
-    // } ) //multirender movie label
+  const handleExpandClick = (i, id) => {
     setExpandedId(expandedId === i ? -1 : i);
-    
-    getMovieMetaData(id)
-    console.log(addtionalMetaData, "TMDB render")    
+    getMovieMetaData(id);
+
+    //multirender movie label
   };
-  
- 
+  console.log(addtionalMetaData);
 
   return moviesArray.map((movie, i) => {
-    let id = movie.id.toString()
+    let id = movie.id.toString();
     return (
-      <div>
-      <Card className={classes.root} key = {movie.id}>
-        <CardHeader
-          title={movie.title}
-          subheader={releaseDate + movie.release_date}
-        />
-        <CardMedia
-          className={classes.media}
-          tittle={movie.title}
-          image={getMovieCover + movie.poster_path}
-        />
-        <CardContent>
+      <div className={classes.margin}>
+        <Card className={classes.root} key={movie.id}>
+          <CardHeader
+            title={movie.title}
+            subheader={releaseDate + movie.release_date}
+          />
           <Typography variant="body1" color="textSecondary" component="p">
-            {movie.overview}
+            {voteAvg + movie.vote_average}
           </Typography>
-        </CardContent>
-        <CardActions disablespacing>
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={() => handleExpandClick(i, id)}
-            aria-expanded={expandedId === i}
-            aria-label="show more"
-          >
-
-          <UnfoldMoreIcon />
-          </IconButton>
-        </CardActions>
-        <Collapse in={expandedId === i} timeout="auto" unmountOnExit>
+          <CardMedia
+            className={classes.media}
+            tittle={movie.title}
+            image={getMovieCover + movie.poster_path}
+          />
           <CardContent>
-            <Chip label="genres" />
-            
+            <Typography variant="body1" color="textSecondary" component="p">
+              {movie.overview}
+            </Typography>
           </CardContent>
-        </Collapse>
+          <CardActions disablespacing>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={() => handleExpandClick(i, id)}
+              aria-expanded={expandedId === i}
+              aria-label="show more"
+            >
+              <UnfoldMoreIcon />
+            </IconButton>
+          </CardActions>
+          <Collapse in={expandedId === i} timeout="auto" unmountOnExit>
+            <CardContent>
+              <Chip label={addtionalMetaData.Genre} />
+            </CardContent>
+          </Collapse>
 
-        {/* <button
+          {/* <button
           onClick={() => {
-            getMovieMetaData(
-              movie.id.toString(),
-              console.log(moviesArray, "onFunction")
-            );
           }}
         >
-          set movie Id
+          onAdd
         </button> */}
-      </Card>
+        </Card>
       </div>
-
     );
   });
 };
