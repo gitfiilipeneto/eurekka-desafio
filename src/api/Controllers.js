@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import TmdbRender from "../components/TmdbRender";
 import API from "./api";
 
+import { makeStyles } from "@material-ui/core/styles";
+import Grid from "@material-ui/core/Grid";
+
 const Controllers = () => {
   const [tmdb, setTmdb] = useState({ results: [] });
 
@@ -12,9 +15,10 @@ const Controllers = () => {
   const [addtionalMetaData, setAdditionalMetadata] = useState({});
 
   useEffect(() => {
-    API.getTMDBTopRatting(pagination).then((TMDBTopRatting) =>
-      setTmdb(TMDBTopRatting)
-    );
+    API.getTMDBTopRatting(pagination).then((TMDBTopRatting) => {
+      setTmdb(TMDBTopRatting);
+      // console.log(`${tmdb.results} initial render`)
+    });
   }, []);
 
   const nextPage = () => {
@@ -34,35 +38,55 @@ const Controllers = () => {
     }
   };
 
-  const [ratings, setRatings] = useState([{}]);
-
   const getMovieMetaData = (id) => {
     API.getSpecificMovie(id).then((movieMetaData) => {
       setMovieMetaData(movieMetaData);
-      console.log(movieMetaData.imdb_id, "imdb ID");
       return getAdditionalData(movieMetaData.imdb_id.toString());
     });
   };
 
   const getAdditionalData = (imdbId) => {
     API.getOMDB(imdbId).then((addtionalMetaData) => {
-      return setAdditionalMetadata(addtionalMetaData)
-      
+      setAdditionalMetadata(addtionalMetaData);
+      console.log(addtionalMetaData);
     });
   };
+
+  const useStyles = makeStyles((theme) => ({
+    root: {
+      flexGrow: 1,
+    },
+
+    control: {
+      padding: "20",
+      margin: "10",
+    },
+  }));
+
   let moviesArray = tmdb.results;
+
+  const classes = useStyles();
 
   return (
     <>
-      page: {pagination}
-      <TmdbRender
-        moviesArray={moviesArray}
-        getMovieMetaData={getMovieMetaData}
-        addtionalMetaData={addtionalMetaData}
-      />
-
-      <button onClick={() => previousPage()}>Previous Page</button>
-      <button onClick={() => nextPage()}>NextPage</button>
+      <p>page: {pagination}</p>
+      <Grid container className={classes.root} spacing={2}>
+        <Grid container justify="space-around" spacing={2}>
+          <>
+            <TmdbRender
+              className={classes.padding}
+              moviesArray={moviesArray}
+              getMovieMetaData={getMovieMetaData}
+              movieMetaData={movieMetaData}
+              addtionalMetaData={addtionalMetaData}
+            />
+          </>
+          <Grid container justify="center" >
+            <button onClick={() => previousPage()}>Previous Page</button>
+            <button onClick={() => nextPage()}>NextPage</button>
+          </Grid>
+        </Grid>
+      </Grid>
     </>
   );
 };

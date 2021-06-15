@@ -1,4 +1,3 @@
-let omdb = undefined;
 class API {
   static getTMDBTopRatting(page) {
     return fetch(
