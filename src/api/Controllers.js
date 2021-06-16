@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TmdbRender from "../components/TmdbRender";
+import MyFavsBar from '../components/MyFavsBar';
 import API from "./api";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -64,6 +65,27 @@ const Controllers = () => {
       behavior: "smooth",
     });
 
+  const [myFavs, setMyFavs] = useState([])
+  const [favorite, setFavorite] = useState()
+
+  const favoritedColor = (i, movieData) => {
+    setFavorite(classes.favorited)
+  } 
+
+  const addToFavs = (i,movieData) => {
+    if(myFavs.includes(movieData)){
+    favoritedColor(i, movieData)
+    return
+    }
+    setMyFavs([...myFavs, movieData])
+  };
+
+  const removeFromFavs = (i,movieData) => {
+    myFavs.splice(i, 1);
+    setMyFavs([myFavs, movieData])
+    console.log(myFavs, "removeFavs Arr")
+  }
+
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -76,14 +98,18 @@ const Controllers = () => {
     spacement: {
       marginRight: "50px",
     },
+    favorited: {
+      color: "red",
+    },
   }));
+
   const Button = styled(MuiButton)(spacing);
 
   const controls = (
     <Grid container justify="center">
       <Button
         mt={2}
-        // className={classes.spacing}
+
         disabled={pagination === 1}
         variant="contained"
         color="primary"
@@ -108,6 +134,7 @@ const Controllers = () => {
 
   return (
     <>
+      <MyFavsBar myFavs={myFavs}/>
       <h1>Page: {pagination}</h1>
       {controls}
       <Grid container className={classes.root} spacing={2}>
@@ -117,9 +144,11 @@ const Controllers = () => {
               className={classes.padding}
               moviesArray={moviesArray}
               getMovieMetaData={getMovieMetaData}
-              movieMetaData={movieMetaData}
               addtionalMetaData={addtionalMetaData}
               ratings={ratings}
+              addToFavs={addToFavs}
+              removeFromFavs={removeFromFavs}
+              favorite={favorite}
             />
           </>
         </Grid>
