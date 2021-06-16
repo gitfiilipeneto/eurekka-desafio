@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -7,10 +7,10 @@ import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import { Typography, CardActions } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import Collapse from "@material-ui/core/Collapse";
 import Chip from "@material-ui/core/Chip";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,12 +46,8 @@ const TmdbRender = ({
   getMovieMetaData,
   movieMetaData,
   addtionalMetaData,
+  ratings,
 }) => {
-  // useEffect(() => {
-  //   metaDataDependency()
-  //   console.log(addtionalMetaData,"metadadependency")
-  // }, []);
-
   const [expanded, setExpanded] = useState(false);
   const [expandedId, setExpandedId] = useState(-1);
   const classes = useStyles();
@@ -63,13 +59,25 @@ const TmdbRender = ({
   const handleExpandClick = (i, id) => {
     setExpandedId(expandedId === i ? -1 : i);
     getMovieMetaData(id);
-
-    //multirender movie label
   };
-  console.log(addtionalMetaData);
+
+  
 
   return moviesArray.map((movie, i) => {
+
     let id = movie.id.toString();
+    let ratingsArr = []
+    const ratingsMap = () => {
+      for(let i = 0; i < ratings.length; i++){
+        if(ratings.length === undefined){
+          console.log(1)
+          return null
+        }else{
+          ratingsArr = [...ratingsArr, ` ${ratings[i].Source}: ${ratings[i].Value} `].join('')
+        }
+      }
+    }
+    ratingsMap()
     return (
       <div className={classes.margin}>
         <Card className={classes.root} key={movie.id}>
@@ -105,15 +113,13 @@ const TmdbRender = ({
           <Collapse in={expandedId === i} timeout="auto" unmountOnExit>
             <CardContent>
               <Chip label={addtionalMetaData.Genre} />
+              <CardContent>
+                <Typography>
+                  {ratingsArr}
+                </Typography>
+              </CardContent>
             </CardContent>
           </Collapse>
-
-          {/* <button
-          onClick={() => {
-          }}
-        >
-          onAdd
-        </button> */}
         </Card>
       </div>
     );

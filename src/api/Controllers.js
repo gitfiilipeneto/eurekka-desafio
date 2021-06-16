@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import TmdbRender from "../components/TmdbRender";
-import MyMovies from "../components/MyMoviesList";
 import API from "./api";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -14,7 +13,7 @@ const Controllers = () => {
 
   const [movieMetaData, setMovieMetaData] = useState({ imdb_id: 0 });
   const [addtionalMetaData, setAdditionalMetadata] = useState({});
-  const [myMovies, setMyMovies] = useState([]);
+  const [ratings, setRatings] = useState({ Ratings : [{Source: " ", Value: " "}] });
 
   useEffect(() => {
     API.getTMDBTopRatting(pagination).then((TMDBTopRatting) => {
@@ -24,6 +23,7 @@ const Controllers = () => {
 
   const nextPage = () => {
     setPagination(pagination + 1);
+    scrollToTop()
     API.getTMDBTopRatting(pagination + 1).then((TMDBTopRatting) =>
       setTmdb(TMDBTopRatting)
     );
@@ -33,6 +33,7 @@ const Controllers = () => {
       return;
     } else {
       setPagination(pagination - 1);
+      scrollToTop()
       API.getTMDBTopRatting(pagination - 1).then((TMDBTopRatting) =>
         setTmdb(TMDBTopRatting)
       );
@@ -48,9 +49,16 @@ const Controllers = () => {
 
   const getAdditionalData = (imdbId) => {
     API.getOMDB(imdbId).then((addtionalMetaData) => {
+      setRatings(addtionalMetaData.Ratings)
       setAdditionalMetadata(addtionalMetaData);
+      
     });
   };
+
+  const scrollToTop = () =>window.scrollTo({
+    top: 0,
+    behavior: 'smooth',
+  })
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -79,6 +87,8 @@ const Controllers = () => {
               getMovieMetaData={getMovieMetaData}
               movieMetaData={movieMetaData}
               addtionalMetaData={addtionalMetaData}
+              ratings={ratings}
+
             />
           </>
           <Grid container justify="center">
@@ -100,7 +110,7 @@ const Controllers = () => {
           </Grid>
         </Grid>
       </Grid>
-      {/* <MyMovies/> */}
+
     </>
   );
 };
