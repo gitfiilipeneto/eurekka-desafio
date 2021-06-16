@@ -4,25 +4,30 @@ import API from "./api";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
+import { styled } from "@material-ui/core/styles";
+import { spacing } from "@material-ui/system";
+import MuiButton from "@material-ui/core/Button";
 
 const Controllers = () => {
   const [tmdb, setTmdb] = useState({ results: [] });
 
   const [pagination, setPagination] = useState(1);
 
-  // const [imdb_index, setImdb_index] = useState("");
   const [movieMetaData, setMovieMetaData] = useState({ imdb_id: 0 });
   const [addtionalMetaData, setAdditionalMetadata] = useState({});
+  const [ratings, setRatings] = useState({
+    Ratings: [{ Source: " ", Value: " " }],
+  });
 
   useEffect(() => {
     API.getTMDBTopRatting(pagination).then((TMDBTopRatting) => {
       setTmdb(TMDBTopRatting);
-      // console.log(`${tmdb.results} initial render`)
     });
   }, []);
 
   const nextPage = () => {
     setPagination(pagination + 1);
+    scrollToTop();
     API.getTMDBTopRatting(pagination + 1).then((TMDBTopRatting) =>
       setTmdb(TMDBTopRatting)
     );
@@ -32,6 +37,7 @@ const Controllers = () => {
       return;
     } else {
       setPagination(pagination - 1);
+      scrollToTop();
       API.getTMDBTopRatting(pagination - 1).then((TMDBTopRatting) =>
         setTmdb(TMDBTopRatting)
       );
@@ -47,10 +53,16 @@ const Controllers = () => {
 
   const getAdditionalData = (imdbId) => {
     API.getOMDB(imdbId).then((addtionalMetaData) => {
+      setRatings(addtionalMetaData.Ratings);
       setAdditionalMetadata(addtionalMetaData);
-      console.log(addtionalMetaData);
     });
   };
+
+  const scrollToTop = () =>
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -61,7 +73,34 @@ const Controllers = () => {
       padding: "20",
       margin: "10",
     },
+    spacement: {
+      marginRight: "50px",
+    },
   }));
+  const Button = styled(MuiButton)(spacing);
+
+  const controls = (
+    <Grid container justify="center">
+      <Button
+        mt={2}
+        // className={classes.spacing}
+        disabled={pagination === 1}
+        variant="contained"
+        color="primary"
+        onClick={() => previousPage()}
+      >
+        Previous Page
+      </Button>
+      <Button
+        mt={2}
+        variant="contained"
+        color="primary"
+        onClick={() => nextPage()}
+      >
+        Next Page
+      </Button>
+    </Grid>
+  );
 
   let moviesArray = tmdb.results;
 
@@ -69,7 +108,8 @@ const Controllers = () => {
 
   return (
     <>
-      <p>page: {pagination}</p>
+      <h1>Page: {pagination}</h1>
+      {controls}
       <Grid container className={classes.root} spacing={2}>
         <Grid container justify="space-around" spacing={2}>
           <>
@@ -79,14 +119,12 @@ const Controllers = () => {
               getMovieMetaData={getMovieMetaData}
               movieMetaData={movieMetaData}
               addtionalMetaData={addtionalMetaData}
+              ratings={ratings}
             />
           </>
-          <Grid container justify="center" >
-            <button onClick={() => previousPage()}>Previous Page</button>
-            <button onClick={() => nextPage()}>NextPage</button>
-          </Grid>
         </Grid>
       </Grid>
+      {controls}
     </>
   );
 };
