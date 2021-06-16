@@ -4,7 +4,10 @@ import API from "./api";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
+import { styled } from "@material-ui/core/styles";
+import { spacing } from "@material-ui/system";
+import MuiButton from "@material-ui/core/Button";
+
 
 const Controllers = () => {
   const [tmdb, setTmdb] = useState({ results: [] });
@@ -69,7 +72,32 @@ const Controllers = () => {
       padding: "20",
       margin: "10",
     },
+    spacement:{
+      marginRight: "50px"
+    },
   }));
+  const Button = styled(MuiButton)(spacing);
+  
+  const controls = <Grid container justify="center">
+  <Button
+    mt={2}
+    // className={classes.spacing}
+    disabled={pagination === 1}
+    variant="contained"
+    color="primary"
+    onClick={() => previousPage()}
+  >
+    Previous Page
+  </Button>
+  <Button
+    mt={2}
+    variant="contained"
+    color="primary"
+    onClick={() => nextPage()}
+  >
+    Next Page
+  </Button>
+</Grid>
 
   let moviesArray = tmdb.results;
 
@@ -77,7 +105,8 @@ const Controllers = () => {
 
   return (
     <>
-      <p>page: {pagination}</p>
+      <h1>Page: {pagination}</h1>
+      {controls}
       <Grid container className={classes.root} spacing={2}>
         <Grid container justify="space-around" spacing={2}>
           <>
@@ -91,26 +120,10 @@ const Controllers = () => {
 
             />
           </>
-          <Grid container justify="center">
-            <Button
-              disabled={pagination === 1}
-              variant="contained"
-              color="primary"
-              onClick={() => previousPage()}
-            >
-              Previous Page
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => nextPage()}
-            >
-              Next Page
-            </Button>
-          </Grid>
+          
         </Grid>
       </Grid>
-
+      {controls}
     </>
   );
 };
