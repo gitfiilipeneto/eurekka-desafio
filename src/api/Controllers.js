@@ -64,6 +64,27 @@ const Controllers = () => {
       behavior: "smooth",
     });
 
+  const [myFavs, setMyFavs] = useState([])
+  const [favorite, setFavorite] = useState()
+
+  const favoritedColor = (i, movieData) => {
+    setFavorite(classes.favorited)
+  } 
+
+  const addToFavs = (i,movieData) => {
+    if(myFavs.includes(movieData)){
+    favoritedColor(i, movieData)
+    return
+    }
+    setMyFavs([...myFavs, movieData])
+  };
+
+  const removeFromFavs = (i) => {
+    myFavs.splice(i, 1);
+    console.log(myFavs)
+  }
+  console.log(myFavs)
+
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
@@ -76,14 +97,18 @@ const Controllers = () => {
     spacement: {
       marginRight: "50px",
     },
+    favorited: {
+      color: "red",
+    },
   }));
+
   const Button = styled(MuiButton)(spacing);
 
   const controls = (
     <Grid container justify="center">
       <Button
         mt={2}
-        // className={classes.spacing}
+
         disabled={pagination === 1}
         variant="contained"
         color="primary"
@@ -117,9 +142,11 @@ const Controllers = () => {
               className={classes.padding}
               moviesArray={moviesArray}
               getMovieMetaData={getMovieMetaData}
-              movieMetaData={movieMetaData}
               addtionalMetaData={addtionalMetaData}
               ratings={ratings}
+              addToFavs={addToFavs}
+              removeFromFavs={removeFromFavs}
+              favorite={favorite}
             />
           </>
         </Grid>

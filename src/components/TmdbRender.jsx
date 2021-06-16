@@ -10,6 +10,7 @@ import IconButton from "@material-ui/core/IconButton";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import Collapse from "@material-ui/core/Collapse";
 import Chip from "@material-ui/core/Chip";
+import FavoriteIcon from '@material-ui/icons/Favorite';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,17 +36,20 @@ const useStyles = makeStyles((theme) => ({
   expandOpen: {
     transform: "rotate(180deg)",
   },
-  diabled: {
-    backgroundColor: "red"[500],
+
+  space: {
+    justifyContent:"space-between"
   },
 }));
 
 const TmdbRender = ({
   moviesArray,
   getMovieMetaData,
-  movieMetaData,
   addtionalMetaData,
   ratings,
+  addToFavs,
+  removeFromFavs,
+  favorite
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [expandedId, setExpandedId] = useState(-1);
@@ -97,7 +101,16 @@ const TmdbRender = ({
               {movie.overview}
             </Typography>
           </CardContent>
-          <CardActions disablespacing>
+          <CardActions disablespacing className={classes.space}>
+            
+            <IconButton className={favorite}
+              onClick={() => {addToFavs(i,movie)
+              }}
+            aria-label="add to favorites">
+          <FavoriteIcon />
+        </IconButton>
+          <button
+          onClick={()=> removeFromFavs(i)} >Remove</button>
             <IconButton
               className={clsx(classes.expand, {
                 [classes.expandOpen]: expanded,
