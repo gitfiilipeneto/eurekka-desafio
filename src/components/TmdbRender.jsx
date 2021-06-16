@@ -110,7 +110,7 @@ const TmdbRender = ({
           <FavoriteIcon />
         </IconButton>
           <button
-          onClick={()=> removeFromFavs(i)} >Remove</button>
+          onClick={()=> removeFromFavs(i, movie)} >Remove</button>
             <IconButton
               className={clsx(classes.expand, {
                 [classes.expandOpen]: expanded,
