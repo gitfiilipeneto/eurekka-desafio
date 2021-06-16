@@ -10,7 +10,8 @@ import IconButton from "@material-ui/core/IconButton";
 import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import Collapse from "@material-ui/core/Collapse";
 import Chip from "@material-ui/core/Chip";
-import FavoriteIcon from '@material-ui/icons/Favorite';
+import FavoriteIcon from "@material-ui/icons/Favorite";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   space: {
-    justifyContent:"space-between"
+    justifyContent: "space-between",
   },
 }));
 
@@ -49,7 +50,6 @@ const TmdbRender = ({
   ratings,
   addToFavs,
   removeFromFavs,
-  favorite
 }) => {
   const [expanded, setExpanded] = useState(false);
   const [expandedId, setExpandedId] = useState(-1);
@@ -102,15 +102,18 @@ const TmdbRender = ({
             </Typography>
           </CardContent>
           <CardActions disablespacing className={classes.space}>
-            
-            <IconButton className={favorite}
-              onClick={() => {addToFavs(i,movie)
+            <IconButton onClick={() => removeFromFavs(i, movie)}>
+              <DeleteIcon />
+            </IconButton>
+            <IconButton
+              onClick={() => {
+                addToFavs(i, movie);
               }}
-            aria-label="add to favorites">
-          <FavoriteIcon />
-        </IconButton>
-          <button
-          onClick={()=> removeFromFavs(i, movie)} >Remove</button>
+              aria-label="add to favorites"
+            >
+              <FavoriteIcon />
+            </IconButton>
+
             <IconButton
               className={clsx(classes.expand, {
                 [classes.expandOpen]: expanded,
