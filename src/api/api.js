@@ -1,3 +1,9 @@
+let myHeaders = new Headers({
+  "Access-Control-Allow-Origin": "*",
+  "Content-Type": "text/plain",
+  "mode":"no-cors",
+  "Access-Control-Allow-Methods": "GET"})
+
 class API {
   static getTMDBTopRatting(page) {
     return fetch(
@@ -13,7 +19,7 @@ class API {
   }
 
   static getOMDB(imdbID) {
-    return fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=40e4e39d`).then(
+    return fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=40e4e39d`, myHeaders).then(
       (omdbResponse) => omdbResponse.json()
     );
 
