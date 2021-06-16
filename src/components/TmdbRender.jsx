@@ -11,7 +11,6 @@ import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import Collapse from "@material-ui/core/Collapse";
 import Chip from "@material-ui/core/Chip";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 500,
@@ -61,23 +60,23 @@ const TmdbRender = ({
     getMovieMetaData(id);
   };
 
-  
-
   return moviesArray.map((movie, i) => {
-
     let id = movie.id.toString();
-    let ratingsArr = []
+    let ratingsArr = [];
     const ratingsMap = () => {
-      for(let i = 0; i < ratings.length; i++){
-        if(ratings.length === undefined){
-          console.log(1)
-          return null
-        }else{
-          ratingsArr = [...ratingsArr, ` ${ratings[i].Source}: ${ratings[i].Value} `].join('')
+      for (let i = 0; i < ratings.length; i++) {
+        if (ratings.length === undefined) {
+          console.log(1);
+          return null;
+        } else {
+          ratingsArr = [
+            ...ratingsArr,
+            ` ${ratings[i].Source}: ${ratings[i].Value} `,
+          ].join("");
         }
       }
-    }
-    ratingsMap()
+    };
+    ratingsMap();
     return (
       <div className={classes.margin}>
         <Card className={classes.root} key={movie.id}>
@@ -114,9 +113,7 @@ const TmdbRender = ({
             <CardContent>
               <Chip label={addtionalMetaData.Genre} />
               <CardContent>
-                <Typography>
-                  {ratingsArr}
-                </Typography>
+                <Typography>{ratingsArr}</Typography>
               </CardContent>
             </CardContent>
           </Collapse>

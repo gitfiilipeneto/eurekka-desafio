@@ -8,7 +8,6 @@ import { styled } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import MuiButton from "@material-ui/core/Button";
 
-
 const Controllers = () => {
   const [tmdb, setTmdb] = useState({ results: [] });
 
@@ -16,17 +15,19 @@ const Controllers = () => {
 
   const [movieMetaData, setMovieMetaData] = useState({ imdb_id: 0 });
   const [addtionalMetaData, setAdditionalMetadata] = useState({});
-  const [ratings, setRatings] = useState({ Ratings : [{Source: " ", Value: " "}] });
+  const [ratings, setRatings] = useState({
+    Ratings: [{ Source: " ", Value: " " }],
+  });
 
   useEffect(() => {
     API.getTMDBTopRatting(pagination).then((TMDBTopRatting) => {
-      setTmdb(TMDBTopRatting)
+      setTmdb(TMDBTopRatting);
     });
   }, []);
 
   const nextPage = () => {
     setPagination(pagination + 1);
-    scrollToTop()
+    scrollToTop();
     API.getTMDBTopRatting(pagination + 1).then((TMDBTopRatting) =>
       setTmdb(TMDBTopRatting)
     );
@@ -36,7 +37,7 @@ const Controllers = () => {
       return;
     } else {
       setPagination(pagination - 1);
-      scrollToTop()
+      scrollToTop();
       API.getTMDBTopRatting(pagination - 1).then((TMDBTopRatting) =>
         setTmdb(TMDBTopRatting)
       );
@@ -52,16 +53,16 @@ const Controllers = () => {
 
   const getAdditionalData = (imdbId) => {
     API.getOMDB(imdbId).then((addtionalMetaData) => {
-      setRatings(addtionalMetaData.Ratings)
+      setRatings(addtionalMetaData.Ratings);
       setAdditionalMetadata(addtionalMetaData);
-      
     });
   };
 
-  const scrollToTop = () =>window.scrollTo({
-    top: 0,
-    behavior: 'smooth',
-  })
+  const scrollToTop = () =>
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
 
   const useStyles = makeStyles((theme) => ({
     root: {
@@ -72,32 +73,34 @@ const Controllers = () => {
       padding: "20",
       margin: "10",
     },
-    spacement:{
-      marginRight: "50px"
+    spacement: {
+      marginRight: "50px",
     },
   }));
   const Button = styled(MuiButton)(spacing);
-  
-  const controls = <Grid container justify="center">
-  <Button
-    mt={2}
-    // className={classes.spacing}
-    disabled={pagination === 1}
-    variant="contained"
-    color="primary"
-    onClick={() => previousPage()}
-  >
-    Previous Page
-  </Button>
-  <Button
-    mt={2}
-    variant="contained"
-    color="primary"
-    onClick={() => nextPage()}
-  >
-    Next Page
-  </Button>
-</Grid>
+
+  const controls = (
+    <Grid container justify="center">
+      <Button
+        mt={2}
+        // className={classes.spacing}
+        disabled={pagination === 1}
+        variant="contained"
+        color="primary"
+        onClick={() => previousPage()}
+      >
+        Previous Page
+      </Button>
+      <Button
+        mt={2}
+        variant="contained"
+        color="primary"
+        onClick={() => nextPage()}
+      >
+        Next Page
+      </Button>
+    </Grid>
+  );
 
   let moviesArray = tmdb.results;
 
@@ -117,10 +120,8 @@ const Controllers = () => {
               movieMetaData={movieMetaData}
               addtionalMetaData={addtionalMetaData}
               ratings={ratings}
-
             />
           </>
-          
         </Grid>
       </Grid>
       {controls}
