@@ -19,6 +19,7 @@ const Controllers = () => {
   const [ratings, setRatings] = useState({
     Ratings: [{ Source: " ", Value: " " }],
   });
+  const [myFavs, setMyFavs] = useState([])
 
   useEffect(() => {
     API.getTMDBTopRatting(pagination).then((TMDBTopRatting) => {
@@ -65,25 +66,18 @@ const Controllers = () => {
       behavior: "smooth",
     });
 
-  const [myFavs, setMyFavs] = useState([])
-  const [favorite, setFavorite] = useState()
 
-  const favoritedColor = (i, movieData) => {
-    setFavorite(classes.favorited)
-  } 
 
   const addToFavs = (i,movieData) => {
     if(myFavs.includes(movieData)){
-    favoritedColor(i, movieData)
     return
     }
     setMyFavs([...myFavs, movieData])
+    
   };
 
   const removeFromFavs = (i,movieData) => {
-    myFavs.splice(i, 1);
-    setMyFavs([myFavs, movieData])
-    console.log(myFavs, "removeFavs Arr")
+    myFavs.splice(i,1)
   }
 
   const useStyles = makeStyles((theme) => ({
@@ -148,7 +142,7 @@ const Controllers = () => {
               ratings={ratings}
               addToFavs={addToFavs}
               removeFromFavs={removeFromFavs}
-              favorite={favorite}
+          
             />
           </>
         </Grid>
