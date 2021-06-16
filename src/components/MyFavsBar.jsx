@@ -48,6 +48,9 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1),
     backgroundColor: theme.palette.background.paper,
   },
+  textAlign:{
+    textAlign:'left'
+  },
 }));
 
 const MyFavsBar = ({ myFavs }) => {
@@ -65,8 +68,8 @@ const MyFavsBar = ({ myFavs }) => {
   let mapFavs = myFavs.map((fav) => {
     return (
       <div>
-        <p>{fav.title}</p>
-        <p>{fav.id}</p>
+        <p className={classes.textAlign}> -{fav.title}</p>
+        
       </div>
     );
   });

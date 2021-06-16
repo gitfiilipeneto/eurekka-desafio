@@ -27,6 +27,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     marginBottom: 10,
   },
+  average:{
+    marginLeft: 20
+  },
+
   expand: {
     transform: "rotate(0deg)",
     marginLeft: "auto",
@@ -88,7 +92,7 @@ const TmdbRender = ({
             title={movie.title}
             subheader={releaseDate + movie.release_date}
           />
-          <Typography variant="body1" color="textSecondary" component="p">
+          <Typography variant="body1" color="textSecondary" component="p" className={classes.average}>
             {voteAvg + movie.vote_average}
           </Typography>
           <CardMedia
