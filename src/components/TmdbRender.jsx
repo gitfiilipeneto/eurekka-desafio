@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 10,
     marginBottom: 10,
   },
-  average:{
-    marginLeft: 20
+  average: {
+    marginLeft: 20,
   },
 
   expand: {
@@ -68,23 +68,46 @@ const TmdbRender = ({
     getMovieMetaData(id);
   };
 
+  
   return moviesArray.map((movie, i) => {
     let id = movie.id.toString();
+
     let ratingsArr = [];
+
     const ratingsMap = () => {
       for (let i = 0; i < ratings.length; i++) {
         if (ratings.length === undefined) {
-          console.log(1);
+          console.log("aaaaaa");
           return null;
         } else {
           ratingsArr = [
             ...ratingsArr,
             ` ${ratings[i].Source}: ${ratings[i].Value} `,
-          ].join("");
+          ];
         }
       }
+      
     };
     ratingsMap();
+
+    //pq essa função da problema?
+    const splitedArrMovies = (arr) => {
+      arr.map((rating) => {
+        console.log(rating);
+        return <p>{rating}</p>;
+      });
+    };
+
+    // tratamento dos generos para um array de generos
+    let genresArr = [] 
+    const  splitedGenre = () => {
+      let genresFromApiCall = addtionalMetaData.Genre
+      genresArr = [...genresArr, genresFromApiCall]
+      // let splitedGenresArr = genresArr.toString().split(",")
+      // console.log(genresArr, genresArr.length, "exe funct")
+    }
+    splitedGenre()
+    let splitedGenresArr = genresArr.toString().split(",")
     return (
       <div className={classes.margin}>
         <Card className={classes.root} key={movie.id}>
@@ -92,7 +115,12 @@ const TmdbRender = ({
             title={movie.title}
             subheader={releaseDate + movie.release_date}
           />
-          <Typography variant="body1" color="textSecondary" component="p" className={classes.average}>
+          <Typography
+            variant="body1"
+            color="textSecondary"
+            component="p"
+            className={classes.average}
+          >
             {voteAvg + movie.vote_average}
           </Typography>
           <CardMedia
@@ -131,9 +159,15 @@ const TmdbRender = ({
           </CardActions>
           <Collapse in={expandedId === i} timeout="auto" unmountOnExit>
             <CardContent>
-              <Chip label={addtionalMetaData.Genre} />
+              {splitedGenresArr.map( singleGender => {
+                return <Chip label={singleGender}/>
+              })} 
               <CardContent>
-                <Typography>{ratingsArr}</Typography>
+                <Typography>
+                  {ratingsArr.map((rating) => {
+                    return <p>{rating}</p>;
+                  })}
+                </Typography>
               </CardContent>
             </CardContent>
           </Collapse>
