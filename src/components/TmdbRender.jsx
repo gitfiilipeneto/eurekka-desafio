@@ -12,6 +12,7 @@ import Collapse from "@material-ui/core/Collapse";
 import Chip from "@material-ui/core/Chip";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import DeleteIcon from "@material-ui/icons/Delete";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,10 +112,12 @@ const TmdbRender = ({
     return (
       <div className={classes.margin}>
         <Card className={classes.root} key={movie.id}>
+         <Link to={`/showdetails/${movie.id}`}>
           <CardHeader
             title={movie.title}
             subheader={releaseDate + movie.release_date}
           />
+          </Link>
           <Typography
             variant="body1"
             color="textSecondary"
