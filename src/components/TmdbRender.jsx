@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import clsx from "clsx";
 import Card from "@material-ui/core/Card";
@@ -92,12 +92,12 @@ const TmdbRender = ({
     ratingsMap();
 
     //pq essa função da problema?
-    const splitedArrMovies = (arr) => {
-      arr.map((rating) => {
-        console.log(rating);
-        return <p>{rating}</p>;
-      });
-    };
+    // const splitedArrMovies = (arr) => {
+    //   arr.map((rating) => {
+    //     console.log(rating);
+    //     return <p>{rating}</p>;
+    //   });
+    // };
 
     // tratamento dos generos para um array de generos
     let genresArr = [] 
@@ -109,10 +109,11 @@ const TmdbRender = ({
     }
     splitedGenre()
     let splitedGenresArr = genresArr.toString().split(",")
+    let movieid = movie.id.toString()
     return (
       <div className={classes.margin}>
         <Card className={classes.root} key={movie.id}>
-         <Link to={`/showdetails/${movie.id}`}>
+         <Link to={`/movie-details/${movieid}`}>
           <CardHeader
             title={movie.title}
             subheader={releaseDate + movie.release_date}
