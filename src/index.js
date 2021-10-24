@@ -5,22 +5,30 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Link,
   Redirect,
+  useParams,
 } from "react-router-dom";
+import MovieFullInfo from "./components/MovieFullInfo";
+
+const RenderSingleMovie = () => {
+  const { movieId } = useParams();
+
+  return <MovieFullInfo movieId={movieId} />;
+};
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <Route path="/">
-        <Controllers />
-      </Route>
-      <Route
-        path="/showdetails/:movieid"
-        render={(movieid) => {
-          <Redirect to={`${movieid}`} />;
-        }}
-      />
+      <Switch>
+        <Route exact path="/">
+          <Controllers />
+        </Route>
+
+        <Route
+          path="/movie-details/:movieId"
+          children={<RenderSingleMovie />}
+        />
+      </Switch>
     </Router>
   </React.StrictMode>,
   document.getElementById("root")

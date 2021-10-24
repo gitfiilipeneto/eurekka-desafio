@@ -8,6 +8,7 @@ import Grid from "@material-ui/core/Grid";
 import { styled } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import MuiButton from "@material-ui/core/Button";
+import { CssBaseline } from "@material-ui/core";
 
 const Controllers = () => {
   const [tmdb, setTmdb] = useState({ results: [] });
@@ -83,6 +84,7 @@ const Controllers = () => {
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
+      margin: "unset" 
     },
 
     control: {
@@ -128,6 +130,7 @@ const Controllers = () => {
 
   return (
     <>
+      <CssBaseline />
       <MyFavsBar myFavs={myFavs}/>
       <h1>Page: {pagination}</h1>
       {controls}
