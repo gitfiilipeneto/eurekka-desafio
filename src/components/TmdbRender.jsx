@@ -101,15 +101,17 @@ const TmdbRender = ({
 
     // tratamento dos generos para um array de generos
     let genresArr = [] 
-    const  splitedGenre = () => {
+    const  splitedGenre =  () => {
       let genresFromApiCall = addtionalMetaData.Genre
       genresArr = [...genresArr, genresFromApiCall]
       // let splitedGenresArr = genresArr.toString().split(",")
       // console.log(genresArr, genresArr.length, "exe funct")
     }
     splitedGenre()
+
     let splitedGenresArr = genresArr.toString().split(",")
     let movieid = movie.id.toString()
+    
     return (
       <div className={classes.margin}>
         <Card className={classes.root} key={movie.id}>
