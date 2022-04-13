@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useContext, useState} from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -7,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Badge from "@material-ui/core/Badge";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import { Input, TextField } from "@material-ui/core";
+import { searchBarContext } from "./searchBarContext";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -17,8 +19,8 @@ const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
     justifyContent: "space-between",
-    background: "black",
-    color: "white",
+    background: "white",
+    color: "black",
   },
   modalItems: {
     fontSize: "20px",
@@ -54,9 +56,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MyFavsBar = ({ myFavs }) => {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [searchBar, setSearchBar] = useContext(searchBarContext)
   const classes = useStyles();
 
+  
   const handleClick = () => {
     setOpen((prev) => !prev);
   };
@@ -77,10 +81,11 @@ const MyFavsBar = ({ myFavs }) => {
   //   const body = ;
 
   return (
+    
     <AppBar position="sticky">
       <Toolbar className={classes.grow}>
         <Typography variant="h6">EurekkaCinemApp </Typography>
-
+        <TextField  label="Buscar por nome do filme" variant="outlined" value={searchBar} onChange={event => setSearchBar(event.target.value.toLowerCase())}/>
         <IconButton>
           <Badge badgeContent={myFavs.length} color="primary">
             <ClickAwayListener onClickAway={handleClickAway}>
@@ -98,6 +103,7 @@ const MyFavsBar = ({ myFavs }) => {
         </IconButton>
       </Toolbar>
     </AppBar>
+    
   );
 };
 

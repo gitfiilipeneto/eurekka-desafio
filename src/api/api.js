@@ -18,6 +18,11 @@ class API {
     // api Example, single movie req i'll read the doc for more
   }
 
+  static getMovieByTitle(title,page) {
+    return fetch(`https://api.themoviedb.org/3/search/movie?api_key=a341a9d7cb2bd4eba1b729d6e957cbf9&query=${title}&page=${page}`)
+      .then((specificMovie) => specificMovie.json());
+  }
+
   static getOMDB(imdbID) {
     return fetch(`http://www.omdbapi.com/?i=${imdbID}&apikey=40e4e39d`, myHeaders).then(
       (omdbResponse) => omdbResponse.json()

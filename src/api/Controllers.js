@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import TmdbRender from "../components/TmdbRender";
-import MyFavsBar from '../components/MyFavsBar';
+import MyFavsBar from "../components/MyFavsBar";
 import API from "./api";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -8,7 +8,9 @@ import Grid from "@material-ui/core/Grid";
 import { styled } from "@material-ui/core/styles";
 import { spacing } from "@material-ui/system";
 import MuiButton from "@material-ui/core/Button";
-import { CssBaseline } from "@material-ui/core";
+import { searchBarContext } from "../components/searchBarContext";
+import { Container, CssBaseline } from "@material-ui/core";
+import SearchQuery from "../components/SearchQuery";
 
 const Controllers = () => {
   const [tmdb, setTmdb] = useState({ results: [] });
@@ -20,7 +22,10 @@ const Controllers = () => {
   const [ratings, setRatings] = useState({
     Ratings: [{ Source: " ", Value: " " }],
   });
-  const [myFavs, setMyFavs] = useState([])
+  const [myFavs, setMyFavs] = useState([]);
+
+  const [searchByTitle, setSearchByTitle] = useState("");
+  const [contextValue, setContextValue] = useState();
 
   useEffect(() => {
     API.getTMDBTopRatting(pagination).then((TMDBTopRatting) => {
@@ -28,13 +33,21 @@ const Controllers = () => {
     });
   }, []);
 
-  const nextPage = () => {
+  useEffect(() => {
+    API.getMovieByTitle(contextValue, pagination).then((movieByTitle) => {
+      setSearchByTitle(movieByTitle);
+      console.log(movieByTitle);
+      console.log(contextValue)
+    });
+  }, [contextValue, pagination]);
+
+  function nextPage() {
     setPagination(pagination + 1);
     scrollToTop();
     API.getTMDBTopRatting(pagination + 1).then((TMDBTopRatting) =>
       setTmdb(TMDBTopRatting)
     );
-  };
+  }
   const previousPage = () => {
     if (pagination === 1) {
       return;
@@ -67,24 +80,21 @@ const Controllers = () => {
       behavior: "smooth",
     });
 
-
-
-  const addToFavs = (i,movieData) => {
-    if(myFavs.includes(movieData)){
-    return
+  const addToFavs = (i, movieData) => {
+    if (myFavs.includes(movieData)) {
+      return;
     }
-    setMyFavs([...myFavs, movieData])
-    
+    setMyFavs([...myFavs, movieData]);
   };
 
-  const removeFromFavs = (i,movieData) => {
-    myFavs.splice(i,1)
-  }
+  const removeFromFavs = (i, movieData) => {
+    myFavs.splice(i, 1);
+  };
 
   const useStyles = makeStyles((theme) => ({
     root: {
       flexGrow: 1,
-      margin: "unset" 
+      margin: "unset",
     },
 
     control: {
@@ -105,7 +115,6 @@ const Controllers = () => {
     <Grid container justify="center">
       <Button
         mt={2}
-
         disabled={pagination === 1}
         variant="contained"
         color="primary"
@@ -130,27 +139,36 @@ const Controllers = () => {
 
   return (
     <>
-      <CssBaseline />
-      <MyFavsBar myFavs={myFavs}/>
-      <h1>Page: {pagination}</h1>
-      {controls}
-      <Grid container className={classes.root} spacing={2}>
-        <Grid container justify="space-around" spacing={2}>
-          <>
-            <TmdbRender
-              className={classes.padding}
-              moviesArray={moviesArray}
-              getMovieMetaData={getMovieMetaData}
-              addtionalMetaData={addtionalMetaData}
-              ratings={ratings}
-              addToFavs={addToFavs}
-              removeFromFavs={removeFromFavs}
-          
-            />
-          </>
+      <searchBarContext.Provider value={[contextValue, setContextValue]}>
+        <CssBaseline />
+        <MyFavsBar myFavs={myFavs} />
+        <h1>Page: {pagination}</h1>
+        {controls}
+        <Grid container className={classes.root} spacing={2}>
+          <Grid container justify="space-around" spacing={2}>
+            <>
+              {contextValue === undefined || contextValue.length === 0 ? (
+                <>
+                  <TmdbRender
+                    className={classes.padding}
+                    moviesArray={moviesArray}
+                    getMovieMetaData={getMovieMetaData}
+                    addtionalMetaData={addtionalMetaData}
+                    ratings={ratings}
+                    addToFavs={addToFavs}
+                    removeFromFavs={removeFromFavs}
+                  />
+                </>
+              ) : (
+                <Container>
+                  <SearchQuery queryResults={searchByTitle} />
+                </Container>
+              )}
+            </>
+          </Grid>
         </Grid>
-      </Grid>
-      {controls}
+        {controls}
+      </searchBarContext.Provider>
     </>
   );
 };
